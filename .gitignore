@@ -1,0 +1,33 @@
+# Файлы кэша Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Виртуальные окружения
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Базы данных
+*.db
+*.sqlite
+*.sqlite3
+
+# Логи и временные файлы
+*.log
+*.tmp
+
+# Файлы IDE
+.idea/
+.vscode/
+
+# Результаты сборки и дистрибутивы
+build/
+dist/
+*.egg-info/
+
+# Отчеты о покрытии кода
+.coverage

@@ -1,0 +1,334 @@
+:root {
+    --bg-color: #1A1B26;      /* Темно-синий фон */
+    --fg-color: #A9B1D6;      /* Светло-серый текст */
+    --border-color: #414868;  /* Приглушенные рамки */
+    --accent-color: #7AA2F7;  /* Мягкий синий для акцентов */
+    --completed-color: #565F89;/* Темный приглушенный синий для выполненных */
+    --danger-color: #F7768E;  /* Мягкий красный */
+    --success-color: #9ECE6A;  /* Мягкий зеленый */
+    --pixel-size: 4px;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    padding: 2rem;
+    padding-bottom: 5rem; /* Добавляем место для фиксированного футера */
+    image-rendering: pixelated;
+    /* Четкие пиксели */
+    cursor: none; /* Скрываем курсор мыши */
+}
+
+/* Убираем сглаживание шрифтов */
+* {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.pixel-box {
+    background: var(--bg-color);
+    border: var(--pixel-size) solid var(--border-color);
+    box-shadow:
+        calc(var(--pixel-size) * 2) 0 0 0 var(--border-color),
+        calc(var(--pixel-size) * -2) 0 0 0 var(--border-color),
+        0 calc(var(--pixel-size) * 2) 0 0 var(--border-color),
+        0 calc(var(--pixel-size) * -2) 0 0 var(--border-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    /* Задаем минимальную высоту, чтобы карточки не меняли размер */
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: var(--accent-color);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+#todo-form {
+    display: flex;
+    flex-direction: column; /* Делаем форму вертикальной */
+    margin-bottom: 2rem;
+}
+
+#todo-form input[type="text"] {
+    background: var(--bg-color);
+    border: var(--pixel-size) solid var(--border-color);
+    border-bottom: none; /* Убираем нижнюю границу, т.к. она будет у блока ниже */
+    color: var(--fg-color);
+    font-family: inherit;
+    padding: 0.5rem;
+    margin-right: calc(var(--pixel-size) * -1);
+}
+
+select {
+    font-family: inherit;
+    background: var(--bg-color);
+    border: var(--pixel-size) solid var(--border-color);
+    color: var(--fg-color);
+    padding: 0.5rem;
+    margin-right: calc(var(--pixel-size) * -1);
+}
+
+.form-controls {
+    display: flex;
+    border: var(--pixel-size) solid var(--border-color);
+    padding: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+button[type="submit"] {
+    font-family: inherit;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: var(--pixel-size) solid var(--border-color);
+    padding: 0.5rem 1rem;
+}
+
+ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem; /* Добавляем отступ между задачами в колонке */
+    word-break: break-word; /* Добавляем перенос длинных слов */
+}
+
+/* Стили для текста задачи, чтобы он прокручивался */
+ul li .pixel-box span {
+    /* flex: 1; - это более надежный способ занять все свободное место */
+    flex: 1;
+    max-height: 60px; /* Ограничиваем высоту текста */
+    overflow-y: auto; /* Добавляем скролл, если текст не помещается */
+}
+
+.completed {
+    text-decoration: line-through;
+    color: var(--completed-color);
+    font-style: italic;
+}
+
+/* --- Стили для фокуса в режиме Vim --- */
+.focused {
+    background-color: var(--fg-color) !important;
+    color: var(--bg-color) !important;
+}
+
+.focused span, .focused .actions button {
+    color: var(--bg-color) !important;
+}
+
+.focused .actions button {
+    border-color: var(--bg-color) !important;
+    background-color: var(--fg-color) !important;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem; /* Отступ от текста задачи */
+}
+
+.actions button {
+    width: calc(var(--pixel-size) * 8);
+    height: calc(var(--pixel-size) * 8);
+    padding: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    border: var(--pixel-size) solid var(--border-color);
+    background: var(--bg-color);
+    margin-bottom: calc(var(--pixel-size) * 2); /* Отступ между кнопками */
+}
+
+.actions .toggle {
+    color: var(--success-color);
+}
+
+.actions .delete {
+    color: var(--danger-color);
+}
+
+.actions button:last-child {
+    margin-bottom: 0; /* Убираем отступ у последней кнопки */
+}
+
+/* --- Стили модального окна --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    cursor: none; /* Скрываем курсор и здесь */
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 500px;
+    /* Используем наш существующий стиль для рамки */
+    background: var(--bg-color);
+    border: var(--pixel-size) solid var(--border-color);
+    box-shadow:
+        calc(var(--pixel-size) * 2) 0 0 0 var(--border-color),
+        calc(var(--pixel-size) * -2) 0 0 0 var(--border-color),
+        0 calc(var(--pixel-size) * 2) 0 0 var(--border-color),
+        0 calc(var(--pixel-size) * -2) 0 0 var(--border-color);
+    padding: 2rem;
+}
+
+.modal-content h2 {
+    color: var(--accent-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#edit-form input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem;
+    /* Добавляем стили, чтобы соответствовать общему виду */
+    background: var(--bg-color);
+    border: var(--pixel-size) solid var(--border-color);
+    color: var(--fg-color);
+    font-family: inherit;
+    padding: 0.5rem;
+}
+
+#edit-form button {
+    width: 100%;
+    padding: 0.75rem;
+    font-family: inherit;
+    border: var(--pixel-size) solid var(--border-color);
+    color: var(--bg-color);
+    margin-top: 0.5rem;
+}
+
+#edit-form button[type="submit"] {
+    background: var(--success-color);
+}
+
+#edit-form button[type="button"] {
+    background: var(--danger-color);
+}
+
+/* Стиль фокуса для кнопок в модальном окне */
+#edit-form button.focused {
+    background: var(--fg-color);
+    color: var(--bg-color);
+}
+
+.urgency-radio-group {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+}
+
+.urgency-radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.urgency-radio-group input[type="radio"] {
+    /* Скрываем стандартный вид */
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    /* Рисуем свою пиксельную кнопку */
+    width: calc(var(--pixel-size) * 5); /* Увеличиваем размер */
+    height: calc(var(--pixel-size) * 5); /* Увеличиваем размер */
+    border: var(--pixel-size) solid var(--border-color);
+    margin-right: 0.5rem;
+    position: relative;
+}
+
+.urgency-radio-group input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    inset: calc(var(--pixel-size) - 1px);
+    background-color: var(--accent-color);
+}
+
+.urgency-radio-group label:has(input[type="radio"]:checked) {
+    color: var(--accent-color);
+    font-weight: bold; /* Добавим жирности для акцента */
+}
+
+/* Убираем отступы у радио-группы в основной форме */
+#todo-form .urgency-radio-group {
+    margin-bottom: 0;
+}
+
+.actions .edit {
+    color: var(--accent-color);
+}
+
+/* --- Стили для колонок --- */
+.columns-container {
+    display: flex;
+    gap: 2rem;
+}
+
+.column {
+    flex: 1;
+    min-width: 0;
+}
+
+.column h2 {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.column:nth-child(1) h2 { color: var(--danger-color); }
+.column:nth-child(2) h2 { color: var(--accent-color); }
+.column:nth-child(3) h2 { color: var(--completed-color); }
+
+.column ul {
+    padding: 0;
+}
+
+/* --- Стили для футера --- */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-color);
+    padding: 1rem 2rem;
+    border-top: var(--pixel-size) solid var(--border-color);
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    color: var(--completed-color);
+    max-width: 960px; /* Ограничиваем ширину, как у main.container */
+    margin: 0 auto;   /* Центрируем контент футера */
+}
+
+#mode-indicator {
+    font-weight: bold;
+    color: var(--accent-color);
+}

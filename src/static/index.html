@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>TODO.EXE</h1>
+
+        <form id="todo-form">
+            <input type="text" id="todo-title" placeholder="> Новая задача..." required>
+            <div class="form-controls">
+                <div class="urgency-radio-group">
+                    <label><input type="radio" name="todo-urgency" value="1"> Срочно!</label>
+                    <label><input type="radio" name="todo-urgency" value="2"> Важно</label>
+                    <label><input type="radio" name="todo-urgency" value="3" checked> Несрочно</label>
+                </div>
+            </div>
+        </form>
+
+        <div class="columns-container">
+            <div class="column">
+                <h2>!! СРОЧНЫЕ !!</h2>
+                <ul id="urgent-list"></ul>
+            </div>
+            <div class="column">
+                <h2>! ВАЖНЫЕ !</h2>
+                <ul id="important-list"></ul>
+            </div>
+            <div class="column">
+                <h2>- Несрочные -</h2>
+                <ul id="normal-list"></ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div id="mode-indicator">-- NORMAL --</div>
+            <div id="datetime-display"></div>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+
+    <!-- Модальное окно для редактирования -->
+    <div id="edit-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>EDIT TASK</h2>
+            <form id="edit-form">
+                <input type="text" id="edit-title" required>
+                <div class="urgency-radio-group">
+                    <label><input type="radio" name="edit-urgency" value="1"> Срочно!</label>
+                    <label><input type="radio" name="edit-urgency" value="2"> Важно</label>
+                    <label><input type="radio" name="edit-urgency" value="3"> Несрочно</label>
+                </div>
+                <input type="hidden" id="edit-id">
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
