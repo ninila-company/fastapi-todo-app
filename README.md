@@ -12,7 +12,7 @@
 
 1.  **Клонируйте репозиторий:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/fastapi-todo-app.git
+    git clone https://github.com/ninila-company/fastapi-todo-app.git
     cd fastapi-todo-app
     ```
 
