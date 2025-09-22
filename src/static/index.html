@@ -8,7 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    <!-- Подключаем разделенные CSS файлы -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <link rel="stylesheet" href="/static/css/components.css">
 </head>
 
 <body>
@@ -49,7 +52,8 @@
         </div>
     </footer>
 
-    <script src="/static/script.js"></script>
+    <!-- Подключаем главный JS-модуль -->
+    <script src="/static/js/main.js" type="module"></script>
 
     <!-- Модальное окно для редактирования -->
     <div id="edit-modal" class="modal-overlay" style="display: none;">
@@ -64,6 +68,38 @@
                 </div>
                 <input type="hidden" id="edit-id">
             </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для справки -->
+    <div id="help-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>HELP: KEYBINDINGS</h2>
+            <div id="help-content">
+                <h3>Normal Mode</h3>
+                <ul>
+                    <li><kbd>j</kbd> / <kbd>k</kbd> - Навигация по задачам вверх/вниз</li>
+                    <li><kbd>h</kbd> / <kbd>l</kbd> - Навигация по колонкам влево/вправо</li>
+                    <li><kbd>i</kbd> - Войти в режим вставки (для создания задачи)</li>
+                    <li><kbd>e</kbd> или <kbd>Enter</kbd> - Редактировать выбранную задачу</li>
+                    <li><kbd>v</kbd> - Отметить задачу как выполненную/невыполненную</li>
+                    <li><kbd>dd</kbd> - Удалить выбранную задачу</li>
+                    <li><kbd>:help</kbd> + <kbd>Enter</kbd> - Показать этот экран</li>
+                </ul>
+                <h3>Insert Mode</h3>
+                <ul>
+                    <li><kbd>Enter</kbd> - Создать новую задачу</li>
+                    <li><kbd>h</kbd> / <kbd>l</kbd> - Изменить срочность</li>
+                    <li><kbd>Esc</kbd> - Выйти в нормальный режим</li>
+                </ul>
+                <h3>Edit Mode</h3>
+                <ul>
+                    <li><kbd>j</kbd> / <kbd>k</kbd> - Навигация по полям</li>
+                    <li><kbd>h</kbd> / <kbd>l</kbd> - Изменить срочность</li>
+                    <li><kbd>Enter</kbd> - Сохранить изменения</li>
+                    <li><kbd>Esc</kbd> - Отменить и закрыть окно</li>
+                </ul>
+            </div>
         </div>
     </div>
 </body>

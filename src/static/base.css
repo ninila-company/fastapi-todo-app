@@ -1,0 +1,27 @@
+:root {
+    --bg-color: #1A1B26;      /* Темно-синий фон */
+    --fg-color: #A9B1D6;      /* Светло-серый текст */
+    --border-color: #414868;  /* Приглушенные рамки */
+    --accent-color: #7AA2F7;  /* Мягкий синий для акцентов */
+    --completed-color: #565F89;/* Темный приглушенный синий для выполненных */
+    --danger-color: #F7768E;  /* Мягкий красный */
+    --success-color: #9ECE6A;  /* Мягкий зеленый */
+    --pixel-size: 4px;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    padding: 2rem;
+    padding-bottom: 5rem; /* Добавляем место для фиксированного футера */
+    image-rendering: pixelated;
+    /* Четкие пиксели */
+    cursor: none; /* Скрываем курсор мыши */
+}
+
+/* Убираем сглаживание шрифтов */
+* {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}

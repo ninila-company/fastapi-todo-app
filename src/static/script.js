@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editForm = document.getElementById('edit-form');
     const editTitleInput = document.getElementById('edit-title');
     const editIdInput = document.getElementById('edit-id');
+    const helpModal = document.getElementById('help-modal');
 
     // --- Состояние для Vim-навигации ---
     let mode = 'normal'; // 'normal' или 'insert'
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let modalNavigables = [];
     let modalFocusIndex = 0;
     let deleteTimeout = null; // Таймер для команды 'dd'
+    let commandBuffer = ''; // Буфер для команд типа :help
 
 
     const API_URL = '/todos';
@@ -203,9 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Закрытие модального окна по клавише Escape
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && editModal.style.display === 'flex') {
-            e.preventDefault();
-            editModal.style.display = 'none';
+        if (e.key === 'Escape') {
+            if (editModal.style.display === 'flex') {
+                e.preventDefault();
+                editModal.style.display = 'none';
+            } else if (helpModal.style.display === 'flex') {
+                e.preventDefault();
+                helpModal.style.display = 'none';
+            }
         }
     });
 
@@ -334,6 +341,38 @@ document.addEventListener('DOMContentLoaded', () => {
         let newCol = oldCol;
         let newTask = oldTask;
 
+        // --- Обработка командного режима (когда вводится команда типа :help) ---
+        if (commandBuffer.startsWith(':')) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (commandBuffer === ':help') {
+                    helpModal.style.display = 'flex';
+                }
+                // Сбрасываем буфер и выходим из командного режима после выполнения
+                commandBuffer = '';
+                modeIndicator.textContent = '-- NORMAL --';
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                commandBuffer = '';
+                modeIndicator.textContent = '-- NORMAL --';
+            } else if (e.key === 'Backspace') {
+                e.preventDefault();
+                commandBuffer = commandBuffer.slice(0, -1);
+                // Если стерли все до двоеточия, выходим из командного режима
+                if (commandBuffer === '') {
+                    modeIndicator.textContent = '-- NORMAL --';
+                } else {
+                    modeIndicator.textContent = commandBuffer;
+                }
+            } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                // Добавляем символ в буфер, если это печатный символ
+                e.preventDefault();
+                commandBuffer += e.key;
+                modeIndicator.textContent = commandBuffer;
+            }
+            return; // Прерываем дальнейшую обработку, так как мы в командном режиме
+        }
+
         // Сбрасываем таймер удаления, если нажата любая другая клавиша, кроме 'd'
         if (e.key !== 'd' && deleteTimeout) {
             clearTimeout(deleteTimeout);
@@ -431,6 +470,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     deleteTimeout = setTimeout(() => { deleteTimeout = null; }, 500); // Окно в 500 мс
                 }
                 break;
+            case ':':
+                e.preventDefault();
+                commandBuffer = ':';
+                modeIndicator.textContent = ':';
+                break;
         }
 
         // Если фокус изменился, обновляем его
@@ -445,8 +489,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.addEventListener('keydown', (e) => {
+        // Если открыто окно справки, не делаем ничего, кроме закрытия по Esc (обрабатывается выше)
+        if (helpModal.style.display === 'flex') {
+            return;
+        }
         // Если открыто модальное окно, используем его навигацию
-        if (editModal.style.display === 'flex' && e.key !== 'Escape') {
+        if (editModal.style.display === 'flex') {
             // Исключаем поле ввода, чтобы в нем можно было печатать
             const activeElement = document.activeElement;
             if (activeElement.tagName === 'INPUT' &&

@@ -1,0 +1,56 @@
+main.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: var(--accent-color);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* --- Стили для колонок --- */
+.columns-container {
+    display: flex;
+    gap: 2rem;
+}
+
+.column {
+    flex: 1;
+    min-width: 0;
+}
+
+.column h2 {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.column:nth-child(1) h2 { color: var(--danger-color); }
+.column:nth-child(2) h2 { color: var(--accent-color); }
+.column:nth-child(3) h2 { color: var(--completed-color); }
+
+.column ul {
+    padding: 0;
+}
+
+/* --- Стили для футера --- */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-color);
+    padding: 1rem 2rem;
+    border-top: var(--pixel-size) solid var(--border-color);
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    color: var(--completed-color);
+    max-width: 960px; /* Ограничиваем ширину, как у main.container */
+    margin: 0 auto;   /* Центрируем контент футера */
+}
