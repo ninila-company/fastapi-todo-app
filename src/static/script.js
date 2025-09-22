@@ -287,17 +287,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (newIndex < modalNavigables.length - 1) newIndex++;
                 break;
             case 'h': // Влево (для радио-кнопок)
-                e.preventDefault();
-                if (newIndex >= 2 && newIndex <= 3) newIndex--;
-                break;
             case 'l': // Вправо (для радио-кнопок)
                 e.preventDefault();
-                if (newIndex >= 1 && newIndex <= 2) newIndex++;
+                const activeElement = document.activeElement;
+                // Убедимся, что мы на радио-кнопке
+                if (activeElement.type === 'radio' && activeElement.name === 'edit-urgency') {
+                    const urgencyRadios = Array.from(editForm.querySelectorAll('input[name="edit-urgency"]'));
+                    const currentIndex = urgencyRadios.indexOf(activeElement);
+
+                    if (e.key === 'l' && currentIndex < urgencyRadios.length - 1) {
+                        const nextRadio = urgencyRadios[currentIndex + 1];
+                        nextRadio.focus();
+                        nextRadio.checked = true;
+                        // Обновляем глобальный индекс фокуса модального окна
+                        newIndex = modalNavigables.indexOf(nextRadio);
+                    } else if (e.key === 'h' && currentIndex > 0) {
+                        const prevRadio = urgencyRadios[currentIndex - 1];
+                        prevRadio.focus();
+                        prevRadio.checked = true;
+                        // Обновляем глобальный индекс фокуса модального окна
+                        newIndex = modalNavigables.indexOf(prevRadio);
+                    }
+                }
                 break;
             case 'Enter':
                 // Позволяем событию 'submit' формы сработать
                 e.preventDefault(); // Предотвращаем стандартное поведение
                 editForm.requestSubmit(); // Программно отправляем форму
+                break;
+            default:
+                // Если нажата другая клавиша, когда фокус на радио-кнопке,
+                // ничего не делаем, чтобы не сбить фокус.
+                if (document.activeElement.type === 'radio') return;
                 break;
         }
 
@@ -427,7 +448,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Если открыто модальное окно, используем его навигацию
         if (editModal.style.display === 'flex' && e.key !== 'Escape') {
             // Исключаем поле ввода, чтобы в нем можно было печатать
-            if (document.activeElement.tagName === 'INPUT' && e.key !== 'Enter' && e.key !== 'Escape') {
+            const activeElement = document.activeElement;
+            if (activeElement.tagName === 'INPUT' &&
+                activeElement.type !== 'radio' && // <-- Вот это изменение
+                e.key !== 'Enter' &&
+                e.key !== 'Escape') {
                 return;
             }
             handleModalKeyDown(e);
