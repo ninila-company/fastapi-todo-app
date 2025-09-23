@@ -52,8 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             if (target.classList.contains('delete')) {
+                // Оптимистичное удаление: сначала убираем из DOM
+                target.closest('.task-card').remove();
                 await api.deleteTodo(id);
-                await loadTodos();
+                // Полная перезагрузка больше не нужна
+                // await loadTodos();
             } else if (target.classList.contains('edit')) {
                 const todo = await api.fetchTodoById(id);
                 openEditModal(todo, vimState);

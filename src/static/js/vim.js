@@ -1,5 +1,5 @@
 import * as api from './api.js';
-import { nodes, columns, updateFocus, updateModalFocus, openEditModal, setMode as setUIMode } from './ui.js';
+import { nodes, columns, updateFocus, updateModalFocus, openEditModal, setMode as setUIMode } from '../js/ui.js';
 
 export const vimState = {
     mode: 'normal',
