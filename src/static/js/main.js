@@ -53,7 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (target.classList.contains('delete')) {
                 // Оптимистичное удаление: сначала убираем из DOM
-                target.closest('.task-card').remove();
+                const taskElement = target.closest('li');
+                if (taskElement) {
+                    taskElement.remove();
+                }
                 await api.deleteTodo(id);
                 // Полная перезагрузка больше не нужна
                 // await loadTodos();
